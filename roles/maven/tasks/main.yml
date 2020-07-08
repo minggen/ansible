@@ -1,0 +1,13 @@
+- name: mkdir necessary catalog
+  file: path={{install_location}} state=directory mode=0755
+- name: copy and unzip 
+  unarchive: src={{package_name}} dest={{install_location}}
+- name: set env
+  lineinfile: dest={{env_file}} insertafter="{{item.position}}" line="{{item.value}}" state=present
+  with_items:
+  - {position: EOF, value: "\n"}
+  - {position: EOF, value: "export MAVEN_HOME={{install_location}}/{{version}}"}
+  - {position: EOF, value: "export PATH=$MAVEN_HOME/bin:$PATH"}
+- name: enforce env
+  shell: source {{env_file}}
+
