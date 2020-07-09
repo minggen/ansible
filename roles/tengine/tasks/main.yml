@@ -1,0 +1,6 @@
+- name: install nginx
+  shell: yum install nginx -y
+- name: start nginx
+  shell: systemctl start nginx.service
+  tags:
+    - start
